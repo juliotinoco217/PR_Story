@@ -10,6 +10,27 @@ if (!dir.exists(plot_dir)) {
   dir.create(plot_dir)
 }
 
+# Define the single_plot_theme
+single_plot_theme <- theme_minimal() +
+  theme(
+    # Title styling
+    plot.title = element_text(size = 14, face = "bold", hjust = 0.5, margin = margin(b = 15)),
+    # Axis styling
+    axis.title = element_text(size = 12, face = "bold"),
+    axis.text = element_text(size = 11, color = "black"),
+    axis.text.x = element_text(angle = 45, hjust = 1, margin = margin(t = 10)),
+    # Grid styling
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_line(color = "gray90", linewidth = 0.3),
+    # Border styling
+    panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.7),
+    # Background
+    panel.background = element_rect(fill = "white"),
+    # Margins
+    plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")
+  )
+
 # Read PR stratification data
 pr_data <- read.delim("../PR_stratificationIDs.txt")
 
