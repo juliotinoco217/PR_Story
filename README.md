@@ -1,51 +1,59 @@
-# CIBERSORT Immune Cell Analysis by PR Status
+# PR Status and Immune Cell Composition Analysis
 
-This repository contains R code for analyzing and visualizing immune cell composition in breast cancer samples stratified by Progesterone Receptor (PR) status using CIBERSORT results.
+This repository contains code and analysis for investigating the relationship between Progesterone Receptor (PR) status and immune cell composition in breast cancer samples from the METABRIC dataset.
 
-## Features
+## Project Structure
 
-- Processes CIBERSORT deconvolution results for different PR status groups (Low, Medium, High)
-- Generates publication-ready violin plots for all immune cell types
-- Creates summary statistics for each cell type across PR categories
-- Uses a custom color scheme and professional plotting theme
+```
+PR Story/
+├── deconvolution/
+│   └── Metabric_Cibersort/
+│       ├── Metabric_Cibersortx_Visualization.R
+│       └── METABRIC Plots/
+├── PR_stratificationIDs.txt
+├── CibersortResults_PR_Low.txt
+├── CibersortResults_PRmid.txt
+└── CIBERSORTx_Results_PR_high.txt
+```
 
-## Cell Types Analyzed
+## Analysis Components
 
-### B cells and Plasma cells
-- B cells (naive)
-- B cells (memory)
-- Plasma cells
+### Immune Cell Deconvolution
+- Uses CIBERSORTx results to analyze immune cell composition
+- Stratifies samples based on PR status (Low/Negative, Medium, High)
+- Includes both adaptive and innate immune cell populations
 
-### T cells
-- CD8+ T cells
-- CD4+ naive T cells
-- CD4+ memory resting T cells
-- CD4+ memory activated T cells
-- T follicular helper cells
-- Regulatory T cells (Tregs)
-- γδ T cells
+### Visualizations
+The R script (`Metabric_Cibersortx_Visualization.R`) generates several plots:
 
-### NK cells
-- NK cells (resting)
-- NK cells (activated)
+1. **Adaptive Immune Cell Distribution**
+   - B cells (naive, memory, and plasma cells)
+   - T cells (CD8+, CD4+ naive, memory resting/activated, T follicular helper, Tregs, and Gamma T cells)
+   - Shows distribution across PR categories with boxplots and individual data points
 
-### Myeloid cells
-- Monocytes
-- Macrophages (M0, M1, M2)
-- Dendritic cells (resting and activated)
+2. **Innate Immune Cell Distribution**
+   - NK cells (resting and activated)
+   - Myeloid cells (Monocytes, M0/M1/M2 Macrophages, Dendritic cells)
+   - Other innate cells (Mast cells, Eosinophils, Neutrophils)
+   - Displays distribution patterns across PR categories
 
-### Other immune cells
-- Mast cells (resting and activated)
-- Eosinophils
-- Neutrophils
-
-## Output
-
-- PDF violin plots for each cell type in the `plots` directory
-- Summary statistics CSV file with mean, standard deviation, and median values
+### Output Files
+- Individual cell type plots: `*_violin.pdf`
+- Combined adaptive immune cell plot: `adaptive_cells_jitter.pdf`
+- Combined innate immune cell plot: `innate_cells_jitter.pdf`
+- Summary statistics: `summary_statistics.csv`
 
 ## Dependencies
+- R packages:
+  - ggplot2
+  - dplyr
+  - tidyr
+  - patchwork
 
-- ggplot2
-- dplyr
-- tidyr
+## Usage
+1. Ensure all required R packages are installed
+2. Place CIBERSORTx result files in the appropriate directory
+3. Run the R script:
+```R
+Rscript deconvolution/Metabric_Cibersort/Metabric_Cibersortx_Visualization.R
+```
