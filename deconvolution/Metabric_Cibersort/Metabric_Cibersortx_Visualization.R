@@ -373,3 +373,73 @@ ggsave(
   height = 8,
   units = "in",
   dpi = 300)
+
+
+  #### Myeloid Cell Jittered Plot ####
+
+##### Myeloid Cell Jittered Plot - Monocytes and Macrophage Subsets #####
+
+# Step 1: Define myeloid cell types and their labels
+myeloid_cell_labels <- c(
+  "Monocytes" = "Monocytes",
+  "Macrophages.M0" = "M0 Macrophages",
+  "Macrophages.M1" = "M1 Macrophages",
+  "Macrophages.M2" = "M2 Macrophages"
+)
+
+myeloid_cell_types <- names(myeloid_cell_labels)
+
+# Step 2: Prepare the data for plotting
+myeloid_cell_data <- cibersort_all %>%
+  select(PR_Category, all_of(myeloid_cell_types)) %>%
+  pivot_longer(
+    cols = all_of(myeloid_cell_types),
+    names_to = "Cell_Type",
+    values_to = "Proportion"
+  ) %>%
+  mutate(
+    Cell_Type = factor(Cell_Type, 
+                      levels = myeloid_cell_types,
+                      labels = myeloid_cell_labels[myeloid_cell_types])
+  )
+
+# Step 3: Create the combined plot
+myeloid_cells_plot <- ggplot(myeloid_cell_data, 
+                            aes(x = Cell_Type, 
+                                y = Proportion, 
+                                fill = PR_Category,
+                                color = PR_Category)) +
+  # Add points with position_jitterdodge
+  geom_point(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.9),
+             size = 1.2,  # Slightly larger points for better visibility
+             alpha = 0.5) +
+  # Add boxplot layer
+  geom_boxplot(position = position_dodge(0.9),
+               width = 0.6,
+               alpha = 0,  # Transparent fill
+               outlier.shape = NA,  # No outlier points (shown in jitter)
+               color = "black",
+               size = 0.5) +  # Thinner box lines
+  # Add styling
+  scale_fill_manual(values = pr_colors) +
+  scale_color_manual(values = pr_colors) +
+  scale_y_continuous(expand = expansion(mult = c(0.1, 0.15))) +
+  labs(title = "Myeloid Cell Distribution by PR Category",
+       x = "Cell Type",
+       y = "Cell Proportion",
+       fill = "PR Category",
+       color = "PR Category") +
+  single_plot_theme +
+  # Additional theme adjustments
+  theme(legend.position = "top",
+        legend.title = element_text(size = 12, face = "bold"),
+        legend.text = element_text(size = 10))
+
+# Step 4: Save the plot
+ggsave(
+  filename = file.path(plot_dir, "myeloid_cells_jitter.pdf"),
+  plot = myeloid_cells_plot,
+  width = 11,  # Slightly wider to accommodate four cell types
+  height = 8,
+  units = "in",
+  dpi = 300)
