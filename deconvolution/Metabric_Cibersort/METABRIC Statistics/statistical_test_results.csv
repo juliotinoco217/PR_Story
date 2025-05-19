@@ -1,0 +1,23 @@
+"Cell_Type","Test_Used","Overall_P_Value","Post_Hoc_Test","FDR_Adjusted_P"
+"B.cells.naive","Kruskal-Wallis",0.196272057687709,"Dunn's test",0.2398880705072
+"B.cells.memory","Kruskal-Wallis",0.0466148766711572,"Dunn's test",0.0854606072304548
+"Plasma.cells","Kruskal-Wallis",0.000429709831407515,"Dunn's test",0.00236340407274133
+"T.cells.CD8","Kruskal-Wallis",0.00252623427309413,"Dunn's test",0.0111154308016142
+"T.cells.CD4.naive","Kruskal-Wallis",0.0314069488130626,"Dunn's test",0.0628138976261253
+"T.cells.CD4.memory.resting","Kruskal-Wallis",0.622975882310176,"Dunn's test",0.685273470541193
+"T.cells.CD4.memory.activated","Kruskal-Wallis",0.00708827819056317,"Dunn's test",0.0222774457417699
+"T.cells.follicular.helper","Kruskal-Wallis",0.000106221301010711,"Dunn's test",0.000778956207411883
+"T.cells.regulatory..Tregs.","Kruskal-Wallis",0.0286835695977433,"Dunn's test",0.0628138976261253
+"T.cells.gamma.delta","Kruskal-Wallis",0.060243492622262,"Dunn's test",0.101950525976136
+"NK.cells.resting","Kruskal-Wallis",0.482976156235286,"Dunn's test",0.559235549325068
+"NK.cells.activated","Kruskal-Wallis",0.142736960439752,"Dunn's test",0.196263320604659
+"Monocytes","Kruskal-Wallis",0.884070942884319,"Dunn's test",0.884070942884319
+"Macrophages.M0","Kruskal-Wallis",0.110057633283681,"Dunn's test",0.161417862149399
+"Macrophages.M1","Kruskal-Wallis",7.74649826980151e-07,"Dunn's test",1.70422961935633e-05
+"Macrophages.M2","Kruskal-Wallis",4.01026720466005e-05,"Dunn's test",0.000441129392512606
+"Dendritic.cells.resting","Kruskal-Wallis",0.00704041594325604,"Dunn's test",0.0222774457417699
+"Dendritic.cells.activated","Kruskal-Wallis",0.0750026632712218,"Dunn's test",0.117861327997634
+"Mast.cells.resting","Kruskal-Wallis",0.021112004539428,"Dunn's test",0.0580580124834269
+"Mast.cells.activated","Kruskal-Wallis",0.172705708135991,"Dunn's test",0.223501504646577
+"Eosinophils","Kruskal-Wallis",0.029358983015171,"Dunn's test",0.0628138976261253
+"Neutrophils","Kruskal-Wallis",0.847514367913935,"Dunn's test",0.884070942884319
