@@ -1,128 +1,159 @@
-# Immune Cell Composition Analysis in Breast Cancer by PR Status
+# MIPRA CIBERSORT Analysis Pipeline
 
-## Project Overview
-This project investigates the relationship between Progesterone Receptor (PR) status and immune cell composition in breast cancer samples from the METABRIC dataset using CIBERSORTx deconvolution. The analysis examines how immune cell proportions vary across different PR expression levels (Low, Medium, High).
+## Overview
+This repository contains an R-based analysis pipeline for processing and analyzing CIBERSORT immune cell deconvolution data from the MIPRA study. The pipeline performs statistical analyses to identify differences in immune cell populations between pre- and post-treatment samples, as well as between response groups.
 
-## Repository Structure
-```
-PR Story/
-├── deconvolution/
-│   ├── Metabric_Cibersort/
-│   │   ├── Metabric_Cibersortx_Visualization.R    # Visualization script
-│   │   ├── metabric_cibersortx_statistics.R       # Statistical analysis script
-│   │   ├── METABRIC Statistics/                   # Statistical results
-│   │   └── METABRIC Plots/                        # Visualization outputs
-│   ├── PR_stratificationIDs.txt                   # Sample PR categorization
-│   ├── CibersortResults_PR_Low.txt               # CIBERSORT results for PR-low
-│   ├── CibersortResults_PRmid.txt                # CIBERSORT results for PR-medium
-│   └── CIBERSORTx_Results_PR_high.txt            # CIBERSORT results for PR-high
-```
+## Data Structure
 
-## Methods
+### Input Data
+- **Location**: `deconvolution/CibersortxResults_MIPRA_.txt`
+- **Format**: Tab-delimited text file
+- **Content**: CIBERSORT results containing immune cell proportions
+- **Required Columns**:
+  - Row names: Sample IDs (format: `MXXXB` for pre-treatment, `MXXXS` for post-treatment)
+  - Columns: 22 immune cell type proportions
+  - Additional columns: P-value, Correlation, RMSE (CIBERSORT metrics)
 
-### Data Processing
-1. **PR Status Stratification**
-   - Samples categorized into Low, Medium, and High PR expression groups
-   - Stratification based on PR expression quartiles
+### Sample Information
+The analysis includes 8 paired samples (pre/post treatment):
+- **Responders** (n=4):
+  - M062 (B/S)
+  - M070 (B/S)
+  - M077 (B/S)
+  - M140 (B/S)
+- **Non-responders** (n=4):
+  - M073 (B/S)
+  - M090 (B/S)
+  - M094 (B/S)
+  - M105 (B/S)
 
-2. **Immune Cell Deconvolution**
-   - Used CIBERSORTx algorithm
-   - Analysis of 22 immune cell types:
-     * B cells (naive, memory, plasma cells)
-     * T cells (CD8+, CD4+ naive/memory, Tfh, Tregs, γδ T cells)
-     * NK cells (resting, activated)
-     * Myeloid cells (monocytes, M0/M1/M2 macrophages, dendritic cells)
-     * Other (mast cells, eosinophils, neutrophils)
+### Immune Cell Types Analyzed
+1. B cell populations:
+   - B cells naive
+   - B cells memory
+   - Plasma cells
 
-### Statistical Analysis
-1. **Normality Testing**
-   - Shapiro-Wilk test for each cell type and PR category
-   - Q-Q plots for visual assessment
+2. T cell populations:
+   - T cells CD8
+   - T cells CD4 naive
+   - T cells CD4 memory resting
+   - T cells CD4 memory activated
+   - T cells follicular helper
+   - T cells regulatory (Tregs)
+   - T cells gamma delta
 
-2. **Differential Analysis**
-   - Kruskal-Wallis test across PR categories
-   - Dunn's test for all pairwise comparisons (Low-Medium, Low-High, Medium-High)
-   - Benjamini-Hochberg correction for multiple testing
-   - Complete analysis for all 22 cell types, regardless of Kruskal-Wallis significance
+3. NK cell populations:
+   - NK cells resting
+   - NK cells activated
 
-## Key Findings
+4. Myeloid cell populations:
+   - Monocytes
+   - Macrophages M0
+   - Macrophages M1
+   - Macrophages M2
+   - Dendritic cells resting
+   - Dendritic cells activated
 
-### Significant Cell Type Differences (FDR < 0.05)
+5. Other immune cells:
+   - Mast cells resting
+   - Mast cells activated
+   - Eosinophils
+   - Neutrophils
 
-1. **Most Significant Changes**
-   - Macrophages M1 (p_adj = 1.70e-05)
-     * Significant decrease in High PR vs both Low and Medium
-     * Strongest pairwise difference: Medium-High (statistic = -4.97)
-   - Macrophages M2 (p_adj = 4.41e-04)
-     * Increased in High PR vs Low (statistic = 4.49)
-     * Moderate increase in High vs Medium
-   - T cells follicular helper (p_adj = 7.79e-04)
-     * Increased in High PR vs Low (statistic = 4.28)
-     * Moderate increase in High vs Medium
+## Analysis Pipeline
 
-2. **Other Notable Changes**
-   - Plasma cells (p_adj = 2.36e-03)
-     * Decreased in High PR vs Low (statistic = -3.93)
-   - T cells CD8 (p_adj = 1.11e-02)
-     * Decreased in High PR vs Low (statistic = -3.46)
-   - T cells CD4 memory activated (p_adj = 2.23e-02)
-     * Decreased in High PR vs Low (statistic = -3.08)
+### Statistical Methods
 
-### Pattern Analysis
-- Most significant differences observed between Low and High PR categories
-- Medium PR samples often show intermediate values
-- Consistent pattern of altered immune composition with increasing PR expression
+1. **Pre vs Post Treatment Analysis**
+   - Method: Paired t-test
+   - Comparison: Post-treatment vs Pre-treatment for each cell type
+   - Metrics reported:
+     - t-statistic
+     - P-value
+     - Mean difference
+     - 95% Confidence Interval
+     - FDR-adjusted P-value
+
+2. **Response Group Analysis**
+   - Method: Independent t-test
+   - Comparisons: 
+     - Responders vs Non-responders at pre-treatment
+     - Responders vs Non-responders at post-treatment
+   - Metrics reported:
+     - t-statistic
+     - P-value
+     - Mean difference
+     - 95% Confidence Interval
+     - FDR-adjusted P-value
+
+### Multiple Testing Correction
+- Method: Benjamini-Hochberg False Discovery Rate (FDR)
+- Applied separately for:
+  - Pre vs Post comparisons
+  - Response group comparisons
 
 ## Output Files
 
-### Statistical Results
-- `kruskal_wallis_results.csv`: Complete results for all 22 cell types
-  * KW statistic, p-value, and adjusted p-value
-- `dunns_test_results.csv`: All pairwise comparisons for all cell types
-  * Includes all comparisons regardless of significance
-  * Statistics, raw p-values, and adjusted p-values
-- `significant_differences.csv`: Filtered significant findings (FDR < 0.05)
-- `session_info.txt`: R session information for reproducibility
+### Location
+All output files are saved in the `MIPRA_Statistics` directory with timestamps.
 
-### Visualizations
-- Individual boxplots for each cell type showing:
-  * Distribution across PR categories
-  * Individual data points
-  * Kruskal-Wallis test p-value
-- Color scheme:
-  * Low PR: #5C6B39 (olive)
-  * Medium PR: #2A7D8C (teal)
-  * High PR: #B22234 (red)
+### File Types
+1. **Paired t-test Results** (`paired_ttest_results_[timestamp].csv`):
+   - Cell_Type: Name of the immune cell population
+   - Statistic: t-statistic
+   - P_Value: Unadjusted p-value
+   - Mean_Diff: Mean difference (Post - Pre)
+   - CI_Lower: Lower bound of 95% CI
+   - CI_Upper: Upper bound of 95% CI
+   - P_Adjusted: FDR-adjusted p-value
+
+2. **Response Group Results** (`response_ttest_results_[timestamp].csv`):
+   - Cell_Type: Name of the immune cell population
+   - Timepoint: Pre or Post treatment
+   - Statistic: t-statistic
+   - P_Value: Unadjusted p-value
+   - Mean_Diff: Mean difference (Response - Non-response)
+   - CI_Lower: Lower bound of 95% CI
+   - CI_Upper: Upper bound of 95% CI
+   - P_Adjusted: FDR-adjusted p-value
 
 ## Dependencies
-- R version 4.0 or higher
-- Required R packages:
-  * ggplot2: Advanced data visualization
-  * dplyr: Data manipulation
-  * tidyr: Data tidying
-  * rstatix: Statistical analysis
-  * ggpubr: Publication-ready plots
+Required R packages:
+- `ggplot2`: For potential visualization extensions
+- `dplyr`: For data manipulation
+- `tidyr`: For data reshaping
 
 ## Usage
+1. Ensure input file is present in `deconvolution/CibersortxResults_MIPRA_.txt`
+2. Run the analysis script:
+   ```R
+   Rscript MIPRA_Cibersort/MIPRA_Cibersort_Stats.R
+   ```
+3. Results will be saved in `MIPRA_Statistics` directory
+4. Significant results (P < 0.05) will be printed to console
 
-### Running Statistical Analysis
-```R
-# From the Metabric_Cibersort directory
-Rscript metabric_cibersortx_statistics.R
-```
+## Interpretation Guidelines
+1. **P-values**:
+   - Nominal significance: P < 0.05
+   - Multiple testing corrected significance: FDR < 0.05
 
-### Running Visualizations
-```R
-# From the Metabric_Cibersort directory
-Rscript Metabric_Cibersortx_Visualization.R
-```
+2. **Effect Sizes**:
+   - Mean differences represent absolute changes in cell proportions
+   - Positive values indicate:
+     - For paired tests: Higher in post-treatment
+     - For response tests: Higher in responders
 
-## Notes
-- P-values are adjusted using Benjamini-Hochberg method
-- All boxplots include individual data points for transparency
-- Non-parametric tests used due to non-normal distribution
-- Pairwise comparisons performed for all cell types, providing complete analysis
-- Results suggest PR status significantly influences immune composition
+3. **Confidence Intervals**:
+   - Non-overlapping zero indicates significant difference
+   - Width indicates precision of the estimate
+
+## Notes and Limitations
+1. Small sample size (n=8 pairs) limits statistical power
+2. Multiple testing correction may be conservative
+3. Analysis assumes:
+   - Normal distribution of differences (paired t-test)
+   - Equal variances between groups (response analysis)
+   - Independence of samples
 
 ## Contact
 For questions or issues, please open a GitHub issue or contact the repository maintainer.
