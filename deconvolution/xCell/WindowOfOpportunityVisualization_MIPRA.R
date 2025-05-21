@@ -15,12 +15,12 @@ clean_colnames <- function(names) {
 }
 
 # Read and process MIPRA data
-mipra_xcell <- read_csv("deconvolution/xCell/MIPRA_xCell_results.csv", 
-                       show_col_types = FALSE,
-                       locale = locale(encoding = "latin1")) %>%
+mipra_xcell <- read.delim("deconvolution/xCell/MIPRA_xCell_results.txt", 
+                         sep = "\t",
+                         check.names = FALSE) %>%
   as.data.frame()
-rownames(mipra_xcell) <- mipra_xcell$SampleID
-mipra_xcell <- mipra_xcell[,-1]  # Remove SampleID column
+rownames(mipra_xcell) <- mipra_xcell$PatientID
+mipra_xcell <- mipra_xcell[,-1]  # Remove PatientID column
 colnames(mipra_xcell) <- clean_colnames(colnames(mipra_xcell))
 
 # Print column names to check available cell types
@@ -148,7 +148,7 @@ for(patient in names(mipra_patient_samples)) {
   post_sample <- mipra_patient_samples[[patient]]$samples["post"]
   
   # Get CD8 data for pre samples
-  pre_data <- mipra_xcell[pre_sample, cd8_populations] %>%
+  pre_data <- mipra_xcell[pre_sample, cd8_populations, drop = FALSE] %>%
     as.data.frame() %>%
     pivot_longer(cols = everything(), 
                 names_to = "Cell_Type", 
@@ -167,7 +167,7 @@ for(patient in names(mipra_patient_samples)) {
     )
   
   # Get CD8 data for post samples
-  post_data <- mipra_xcell[post_sample, cd8_populations] %>%
+  post_data <- mipra_xcell[post_sample, cd8_populations, drop = FALSE] %>%
     as.data.frame() %>%
     pivot_longer(cols = everything(), 
                 names_to = "Cell_Type", 
@@ -187,6 +187,14 @@ for(patient in names(mipra_patient_samples)) {
   
   mipra_cd8_data <- rbind(mipra_cd8_data, pre_data, post_data)
 }
+
+# Print total number of data points
+print("\nTotal number of data points:")
+print(nrow(mipra_cd8_data))
+
+# Print number of points per cell type
+print("\nNumber of points per cell type:")
+print(table(mipra_cd8_data$Cell_Type))
 
 # Debug: Print all CD8+ central memory T cells data
 print("\nAll CD8+ central memory T cells data after processing:")
@@ -219,35 +227,38 @@ publication_theme <- theme_minimal() + theme(
   strip.text = element_text(size = 12, face = "bold")
 )
 
-# Function to create spaghetti plot
-create_spaghetti_plot <- function(data, x_var, y_var, group_var, 
-                                title = NULL, x_lab = NULL, y_lab = NULL,
-                                color_palette = NULL) {
+# Function to create bar plot
+create_bar_plot <- function(data, x_var, y_var, 
+                          title = NULL, y_lab = NULL,
+                          color_palette = NULL) {
   
   # Base plot
-  p <- ggplot(data, aes_string(x = x_var, y = y_var, group = group_var)) +
-    # Add individual patient lines
-    geom_line(color = "gray70", linewidth = 0.5, alpha = 0.6) +
-    # Add points for pre and post with slightly larger size
-    geom_point(aes_string(color = x_var), size = 3.5) +
+  p <- ggplot(data, aes_string(x = "Patient", y = y_var, fill = "TimePoint")) +
+    # Add bars side by side
+    geom_bar(stat = "identity", position = position_dodge(width = 0.8), width = 0.7) +
+    # Add value labels on top of bars
+    geom_text(aes(label = sprintf("%.2e", Proportion)), 
+              position = position_dodge(width = 0.8),
+              vjust = -0.5, size = 2.5) +
     # Facet by cell type
     facet_wrap(~Cell_Type, scales = "free_y", ncol = 2) +
-    # Ensure y-axis starts at 0 and includes all data points
+    # Set y-axis scale to show all values
     scale_y_continuous(
-      expand = expansion(mult = c(0, 0.1)),  # No expansion below 0, 10% above max
-      limits = function(x) c(0, max(x) * 1.1)  # Start at 0, extend 10% above max
+      labels = scales::scientific,  # Use scientific notation
+      breaks = scales::pretty_breaks(n = 5),
+      expand = expansion(mult = c(0, 0.2))  # No padding below, 20% padding above for labels
     )
   
   # Add custom color palette if provided
   if (!is.null(color_palette)) {
-    p <- p + scale_color_manual(values = color_palette)
+    p <- p + scale_fill_manual(values = color_palette)
   }
   
   # Add labels
   p <- p + labs(title = title,
-                x = NULL,  # Remove x-axis label since it's clear from the legend
+                x = "Patient ID",
                 y = y_lab,
-                color = "Time Point")  # Legend title
+                fill = "Time Point")  # Legend title
   
   # Apply publication theme with additional styling
   p <- p + publication_theme + 
@@ -258,31 +269,30 @@ create_spaghetti_plot <- function(data, x_var, y_var, group_var,
       legend.position = "top",
       # Adjust facet appearance
       strip.text = element_text(size = 11, face = "bold"),
-      panel.spacing = unit(1, "lines")
+      panel.spacing = unit(1, "lines"),
+      # Rotate x-axis labels for better readability
+      axis.text.x = element_text(angle = 45, hjust = 1)
     )
   
   return(p)
 }
 
-# Create the spaghetti plot using the custom function
-mipra_cd8_plot <- create_spaghetti_plot(
+# Create the bar plot using the custom function
+mipra_cd8_plot <- create_bar_plot(
   data = mipra_cd8_data,
-  x_var = "TimePoint",
+  x_var = "Patient",
   y_var = "Proportion",
-  group_var = "Patient",
   title = "CD8+ T Cell Populations in MIPRA Study",
   y_lab = "Cell Proportion",
   color_palette = mipra_colors
 )
 
-# Create plots directory if it doesn't exist
-dir.create("deconvolution/xCell/plots", showWarnings = FALSE, recursive = TRUE)
-
 # Save the plot
 ggsave(
-  filename = "deconvolution/xCell/plots/MIPRA_CD8_spaghetti.pdf",
+  filename = "deconvolution/xCell/plots/MIPRA_CD8_bars.pdf",
   plot = mipra_cd8_plot,
-  width = 10,
-  height = 8,  # Slightly taller to accommodate facets
+  width = 12,  # Slightly wider to accommodate all bars
+  height = 10,  # Taller to accommodate value labels
   units = "in",
-  dpi = 300)
+  dpi = 300
+)
