@@ -138,12 +138,6 @@ response_mapping <- data.frame(
 cibersort_with_response <- cibersort_results %>%
   left_join(response_mapping, by = "Patient")
 
-# Define response colors
-response_colors <- c(
-  "Response" = "#2A7D8C",     # Deep Teal
-  "Non-response" = "#B22234"  # Crimson Red
-)
-
 # Function to create paired jitter plot for response groups
 create_response_paired_plot <- function(data, cell_type, response_group, cell_label = NULL, show_legend = FALSE) {
   if (is.null(cell_label)) cell_label <- cell_type
@@ -208,45 +202,6 @@ for (cell_type in cell_types) {
     filename = file.path(plot_dir, paste0(cell_type, "_response_comparison.pdf")),
     plot = combined_plot,
     width = 12,
-    height = 5,
-    units = "in",
-    dpi = 300
-  )
-}
-
-# Calculate and plot delta changes
-cibersort_delta <- cibersort_with_response %>%
-  group_by(Patient, Response) %>%
-  summarize(across(all_of(cell_types), 
-                  ~diff(.x[Treatment == "Post"] - .x[Treatment == "Pre"]))) %>%
-  ungroup()
-
-# Function to create delta boxplot
-create_delta_boxplot <- function(data, cell_type, cell_label = NULL) {
-  if (is.null(cell_label)) cell_label <- cell_type
-  
-  ggplot(data, aes(x = Response, y = .data[[cell_type]], fill = Response)) +
-    geom_boxplot(alpha = 0.7, outlier.shape = NA) +
-    geom_jitter(width = 0.2, size = 2, alpha = 0.6) +
-    scale_fill_manual(values = response_colors) +
-    labs(y = paste("Δ", cell_label, "(Cell Fraction)"),
-         x = NULL) +
-    single_plot_theme +
-    theme(legend.position = "none")
-}
-
-# Generate delta plots
-for (cell_type in cell_types) {
-  p <- create_delta_boxplot(
-    data = cibersort_delta,
-    cell_type = cell_type,
-    cell_label = cell_type_labels[cell_type]
-  )
-  
-  ggsave(
-    filename = file.path(plot_dir, paste0(cell_type, "_delta_boxplot.pdf")),
-    plot = p,
-    width = 6,
     height = 5,
     units = "in",
     dpi = 300
