@@ -2,6 +2,20 @@
 TCGA/brca_tcga/data_clinical_patient.txt
 TCGA/selected_clinical_data.txt
 
+# Large TCGA files (over 100MB)
+TCGA/brca_tcga/data_mrna_seq_v2_rsem_zscores_ref_diploid_samples.txt
+TCGA/brca_tcga/data_linear_cna.txt
+TCGA/brca_tcga/data_methylation_hm450.txt
+TCGA/brca_tcga/data_mrna_seq_v2_rsem.txt
+TCGA/brca_tcga/data_mrna_seq_v2_rsem_zscores_ref_all_samples.txt
+
+# Large TCGA files (over 50MB)
+TCGA/brca_tcga/data_mutations.txt
+TCGA/brca_tcga/data_cna.txt
+TCGA/brca_tcga/data_mrna_agilent_microarray.txt
+TCGA/brca_tcga/data_mrna_agilent_microarray_zscores_ref_all_samples.txt
+TCGA/brca_tcga/data_mrna_agilent_microarray_zscores_ref_diploid_samples.txt
+
 # R specific
 .Rhistory
 .Rapp.history
