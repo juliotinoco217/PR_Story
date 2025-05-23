@@ -1,0 +1,45 @@
+"Cell_Type","Comparison","Test","Statistic","P_Value","Effect_Size","P_Adjusted"
+"B cells naive","Pre_Response_vs_NonResponse","Wilcoxon",14,0.0689184442895021,0.643097363351771,0.403665173695655
+"B cells naive","Post_Response_vs_NonResponse","Wilcoxon",12.5,0.245383458473363,0.4107002541942,0.876815604745926
+"B cells memory","Pre_Response_vs_NonResponse","Wilcoxon",1,0.0606019697120061,0.663403472003777,0.403665173695655
+"B cells memory","Post_Response_vs_NonResponse","Wilcoxon",5,0.459597386183942,0.261456258291899,0.876815604745926
+"Plasma cells","Pre_Response_vs_NonResponse","Wilcoxon",6,0.665005542102029,0.153093108923949,1
+"Plasma cells","Post_Response_vs_NonResponse","Wilcoxon",8,1,0,1
+"T cells CD8","Pre_Response_vs_NonResponse","Wilcoxon",9,0.885233914473202,0.0510310363079829,1
+"T cells CD8","Post_Response_vs_NonResponse","Wilcoxon",11,0.47048642205879,0.255155181539914,0.876815604745926
+"T cells CD4 naive","Pre_Response_vs_NonResponse","Wilcoxon",8,NA,NA,NA
+"T cells CD4 naive","Post_Response_vs_NonResponse","Wilcoxon",8,NA,NA,NA
+"T cells CD4 memory resting","Pre_Response_vs_NonResponse","Wilcoxon",11,0.47048642205879,0.255155181539914,0.876815604745926
+"T cells CD4 memory resting","Post_Response_vs_NonResponse","Wilcoxon",10,0.665005542102029,0.153093108923949,1
+"T cells CD4 memory activated","Pre_Response_vs_NonResponse","Wilcoxon",6,0.619839118685419,0.175390190005028,1
+"T cells CD4 memory activated","Post_Response_vs_NonResponse","Wilcoxon",7,0.882420114075504,0.0522912516583797,1
+"T cells follicular helper","Pre_Response_vs_NonResponse","Wilcoxon",13,0.193930852282411,0.459279326771846,0.876815604745926
+"T cells follicular helper","Post_Response_vs_NonResponse","Wilcoxon",7,0.885233914473202,0.0510310363079829,1
+"T cells regulatory (Tregs)","Pre_Response_vs_NonResponse","Wilcoxon",8,1,0,1
+"T cells regulatory (Tregs)","Post_Response_vs_NonResponse","Wilcoxon",11,0.408351969325938,0.292316983341714,0.876815604745926
+"T cells gamma delta","Pre_Response_vs_NonResponse","Wilcoxon",8,NA,NA,NA
+"T cells gamma delta","Post_Response_vs_NonResponse","Wilcoxon",7.5,1,0,1
+"NK cells resting","Pre_Response_vs_NonResponse","Wilcoxon",7.5,1,0,1
+"NK cells resting","Post_Response_vs_NonResponse","Wilcoxon",9,0.868661062991067,0.0584633966683428,1
+"NK cells activated","Pre_Response_vs_NonResponse","Wilcoxon",3,0.193930852282411,0.459279326771846,0.876815604745926
+"NK cells activated","Post_Response_vs_NonResponse","Wilcoxon",1,0.0606019697120061,0.663403472003777,0.403665173695655
+"Monocytes","Pre_Response_vs_NonResponse","Wilcoxon",8,1,0,1
+"Monocytes","Post_Response_vs_NonResponse","Wilcoxon",16,0.0303828219765775,0.765465544619743,0.403665173695655
+"Macrophages M0","Pre_Response_vs_NonResponse","Wilcoxon",6,0.644552170515899,0.163109563575315,1
+"Macrophages M0","Post_Response_vs_NonResponse","Wilcoxon",5,0.459597386183942,0.261456258291899,0.876815604745926
+"Macrophages M1","Pre_Response_vs_NonResponse","Wilcoxon",11,0.47048642205879,0.255155181539914,0.876815604745926
+"Macrophages M1","Post_Response_vs_NonResponse","Wilcoxon",8,1,0,1
+"Macrophages M2","Pre_Response_vs_NonResponse","Wilcoxon",11,0.47048642205879,0.255155181539914,0.876815604745926
+"Macrophages M2","Post_Response_vs_NonResponse","Wilcoxon",7,0.885233914473202,0.0510310363079829,1
+"Dendritic cells resting","Pre_Response_vs_NonResponse","Wilcoxon",14,0.0689184442895021,0.643097363351771,0.403665173695655
+"Dendritic cells resting","Post_Response_vs_NonResponse","Wilcoxon",14,0.0689184442895021,0.643097363351771,0.403665173695655
+"Dendritic cells activated","Pre_Response_vs_NonResponse","Wilcoxon",5,0.408351969325938,0.292316983341714,0.876815604745926
+"Dendritic cells activated","Post_Response_vs_NonResponse","Wilcoxon",2,0.0689184442895021,0.643097363351771,0.403665173695655
+"Mast cells resting","Pre_Response_vs_NonResponse","Wilcoxon",9,0.885233914473202,0.0510310363079829,1
+"Mast cells resting","Post_Response_vs_NonResponse","Wilcoxon",11,0.47048642205879,0.255155181539914,0.876815604745926
+"Mast cells activated","Pre_Response_vs_NonResponse","Wilcoxon",11,0.408351969325938,0.292316983341714,0.876815604745926
+"Mast cells activated","Post_Response_vs_NonResponse","Wilcoxon",8.5,1,0,1
+"Eosinophils","Pre_Response_vs_NonResponse","Wilcoxon",10,0.644552170515899,0.163109563575315,1
+"Eosinophils","Post_Response_vs_NonResponse","Wilcoxon",11,0.408351969325938,0.292316983341714,0.876815604745926
+"Neutrophils","Pre_Response_vs_NonResponse","Wilcoxon",7.5,1,0,1
+"Neutrophils","Post_Response_vs_NonResponse","Wilcoxon",5,0.459597386183942,0.261456258291899,0.876815604745926
