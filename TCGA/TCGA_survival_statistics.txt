@@ -1,0 +1,143 @@
+[1] "================================================================="
+[1] "SURVIVAL ANALYSIS RESULTS - PR Expression Groups"
+[1] "================================================================="
+[1] "\nGroup Sizes:"
+
+  PR_High PR_Medium    PR_Low 
+      118        25        39 
+[1] "\n================================================================="
+[1] "THREE-WAY COMPARISON"
+[1] "================================================================="
+[1] "\nOverall Survival Analysis:"
+[1] "---------------------------"
+Call: survfit(formula = surv_obj_groups ~ PR_Group, data = merged_data_groups)
+
+                PR_Group=PR_High 
+        time       n.risk      n.event     survival      std.err lower 95% CI 
+     19.1900      81.0000       1.0000       0.9877       0.0123       0.9639 
+upper 95% CI 
+      1.0000 
+
+                PR_Group=PR_Medium 
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+ 20.1     21       1    0.952  0.0465        0.866            1
+ 95.6      4       1    0.714  0.2091        0.402            1
+
+                PR_Group=PR_Low 
+  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+  61.9     11       1    0.909  0.0867        0.754            1
+ 114.7      2       1    0.455  0.3243        0.112            1
+
+[1] "\nLog-rank test results:"
+Call:
+survdiff(formula = surv_obj_groups ~ PR_Group, data = merged_data_groups)
+
+                     N Observed Expected (O-E)^2/E (O-E)^2/V
+PR_Group=PR_High   118        1    2.631     1.011     2.187
+PR_Group=PR_Medium  25        2    0.879     1.430     1.737
+PR_Group=PR_Low     39        2    1.490     0.175     0.254
+
+ Chisq= 2.7  on 2 degrees of freedom, p= 0.3 
+[1] "\nRelapse Free Survival Analysis:"
+[1] "--------------------------------"
+Call: survfit(formula = surv_obj_rfs_groups ~ PR_Group, data = merged_data_groups)
+
+3 observations deleted due to missingness 
+                PR_Group=PR_High 
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+ 21.5     69       1    0.986  0.0144        0.958            1
+ 44.8     29       1    0.952  0.0362        0.883            1
+
+                PR_Group=PR_Medium 
+  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+  6.31     23       1    0.957  0.0425        0.877            1
+ 19.25     20       1    0.909  0.0617        0.795            1
+ 59.40      6       1    0.757  0.1475        0.517            1
+ 63.14      5       1    0.606  0.1796        0.339            1
+
+                PR_Group=PR_Low 
+  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+  4.70     37       1    0.973  0.0267        0.922            1
+  8.77     35       1    0.945  0.0377        0.874            1
+ 44.45     12       1    0.866  0.0830        0.718            1
+ 54.04     10       1    0.780  0.1110        0.590            1
+
+[1] "\nLog-rank test results:"
+Call:
+survdiff(formula = surv_obj_rfs_groups ~ PR_Group, data = merged_data_groups)
+
+n=179, 3 observations deleted due to missingness.
+
+                     N Observed Expected (O-E)^2/E (O-E)^2/V
+PR_Group=PR_High   117        2     6.16      2.81      7.33
+PR_Group=PR_Medium  24        4     1.60      3.60      4.30
+PR_Group=PR_Low     38        4     2.24      1.37      1.77
+
+ Chisq= 7.8  on 2 degrees of freedom, p= 0.02 
+[1] "\n================================================================="
+[1] "PAIRWISE COMPARISONS"
+[1] "================================================================="
+[1] "\nPairwise Comparisons - Overall Survival:"
+[1] "----------------------------------------"
+[1] "\nHigh vs Medium:"
+Call:
+survdiff(formula = Surv(OS_MONTHS, OS_event) ~ PR_Group, data = high_med)
+
+                     N Observed Expected (O-E)^2/E (O-E)^2/V
+PR_Group=PR_High   118        1    2.311     0.744      3.25
+PR_Group=PR_Medium  25        2    0.689     2.494      3.25
+
+ Chisq= 3.3  on 1 degrees of freedom, p= 0.07 
+[1] "\nHigh vs Low:"
+Call:
+survdiff(formula = Surv(OS_MONTHS, OS_event) ~ PR_Group, data = high_low)
+
+                   N Observed Expected (O-E)^2/E (O-E)^2/V
+PR_Group=PR_High 118        1     1.85     0.391      1.06
+PR_Group=PR_Low   39        2     1.15     0.629      1.06
+
+ Chisq= 1.1  on 1 degrees of freedom, p= 0.3 
+[1] "\nMedium vs Low:"
+Call:
+survdiff(formula = Surv(OS_MONTHS, OS_event) ~ PR_Group, data = med_low)
+
+                    N Observed Expected (O-E)^2/E (O-E)^2/V
+PR_Group=PR_Medium 25        2     1.47     0.191     0.304
+PR_Group=PR_Low    39        2     2.53     0.111     0.304
+
+ Chisq= 0.3  on 1 degrees of freedom, p= 0.6 
+[1] "\nPairwise Comparisons - Relapse Free Survival:"
+[1] "---------------------------------------------"
+[1] "\nHigh vs Medium:"
+Call:
+survdiff(formula = Surv(DFS_MONTHS, RFS_event) ~ PR_Group, data = high_med)
+
+n=141, 2 observations deleted due to missingness.
+
+                     N Observed Expected (O-E)^2/E (O-E)^2/V
+PR_Group=PR_High   117        2     4.72      1.57      7.41
+PR_Group=PR_Medium  24        4     1.28      5.82      7.41
+
+ Chisq= 7.4  on 1 degrees of freedom, p= 0.006 
+[1] "\nHigh vs Low:"
+Call:
+survdiff(formula = Surv(DFS_MONTHS, RFS_event) ~ PR_Group, data = high_low)
+
+n=155, 2 observations deleted due to missingness.
+
+                   N Observed Expected (O-E)^2/E (O-E)^2/V
+PR_Group=PR_High 117        2     4.38      1.29      4.79
+PR_Group=PR_Low   38        4     1.62      3.48      4.79
+
+ Chisq= 4.8  on 1 degrees of freedom, p= 0.03 
+[1] "\nMedium vs Low:"
+Call:
+survdiff(formula = Surv(DFS_MONTHS, RFS_event) ~ PR_Group, data = med_low)
+
+n=62, 2 observations deleted due to missingness.
+
+                    N Observed Expected (O-E)^2/E (O-E)^2/V
+PR_Group=PR_Medium 24        4     3.28     0.160     0.271
+PR_Group=PR_Low    38        4     4.72     0.111     0.271
+
+ Chisq= 0.3  on 1 degrees of freedom, p= 0.6 
